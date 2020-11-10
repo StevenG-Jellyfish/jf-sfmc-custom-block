@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tbesluau/sampleblock.git"
+    "url": "git@github.com:StevenG-Jellyfish/jf-sfmc-custom-block.git"
   },
-  "author": "Thomas Besluau",
+  "author": "Steven Gallagher based on Thomas Besluau's work",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tbesluau/sampleblock/issues"
   },
-  "homepage": "https://github.com/tbesluau/sampleblock#readme",
+  "homepage": "https://github.com/StevenG-Jellyfish/jf-sfmc-custom-block/README.md",
   "dependencies": {
     "@salesforce-ux/design-system": "^2.5.2",
     "blocksdk": "^1.0.0",

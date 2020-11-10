@@ -70,9 +70,13 @@
 __webpack_require__(1);
 
 var SDK = __webpack_require__(19);
-var sdk = new SDK(null, null, true); // 3rd argument true bypassing https requirement: not prod worthy
+
+// 3rd argument true bypassing https requirement: not prod worthy
+var sdk = new SDK(null, null, true); 
 
 var address, width, height, zoom, link, mapsKey;
+
+var jf_title, jf_body_content, jf_CTA_copy, jf_CTA_target_link, jf_CTA_target_link_type;
 
 function debounce (func, wait, immediate) {
 	var timeout;
@@ -90,59 +94,73 @@ function debounce (func, wait, immediate) {
 }
 
 function paintSettings () {
-	document.getElementById('text-input-id-0').value = mapsKey;
-	document.getElementById('text-input-id-1').value = address;
-	document.getElementById('slider-id-01').value = width;
-	document.getElementById('slider-id-02').value = height;
-	document.getElementById('slider-id-03').value = zoom;
+	document.getElementById('text-input-id-0').value 		= jf_title;
+	document.getElementById('textarea-input-id-0').value 	= jf_body_content;
+	document.getElementById('text-input-id-1').value 		= jf_CTA_copy;
+	document.getElementById('text-input-id-2').value 		= jf_CTA_target_link;
+	paintRadioValues();
 }
 
-function paintSliderValues () {
-	document.getElementById('slider-id-01-val').innerHTML = document.getElementById('slider-id-01').value;
-	document.getElementById('slider-id-02-val').innerHTML = document.getElementById('slider-id-02').value;
-	document.getElementById('slider-id-03-val').innerHTML = document.getElementById('slider-id-03').value;
+function getRadioValues () {
+	var ele = document.getElementsByName('cta-link-display');               
+	for(i = 0; i < ele.length; i++) { 
+		if(ele[i].value == jf_CTA_target_link_type) { 
+			console.log('getRadioValues:: checking button::', ele[i].value, jf_CTA_target_link_type);
+			ele[i].checked = true;
+		}
+	} 
+	//paintRadioValues();
+}
+function paintRadioValues () {
+	var ele = document.getElementsByName('cta-link-display');               
+	for(i = 0; i < ele.length; i++) { 
+		console.log('paintRadioValues:: radio value::', ele[i].value, ele[i].checked, jf_CTA_target_link_type);
+		if(ele[i].checked) { 
+			console.log('paintRadioValues:: checking button::', ele[i].value);
+			jf_CTA_target_link_type = ele[i].value;
+		}
+	} 
 }
 
-function paintMap() {
-	mapsKey = document.getElementById('text-input-id-0').value;
-	address = document.getElementById('text-input-id-1').value;
-	width = document.getElementById('slider-id-01').value;
-	height = document.getElementById('slider-id-02').value;
-	zoom = document.getElementById('slider-id-03').value;
-	link = document.getElementById('text-input-id-2').value;
-	if (!address) {
-		return;
-	}
-	var url = 'https://maps.googleapis.com/maps/api/staticmap?center=' +
-		address.split(' ').join('+') + '&size=' + width + 'x' + height + '&zoom=' + zoom +
-		'&markers=' + address.split(' ').join('+') + '&key=' + mapsKey;
-	sdk.setContent('<a href="' + link + '"><img src="' + url + '" /></a>');
+function paintContent() {
+	jf_title 				= document.getElementById('text-input-id-0').value;
+	jf_body_content 		= document.getElementById('textarea-input-id-0').value;
+	jf_CTA_copy 			= document.getElementById('text-input-id-1').value;
+	jf_CTA_target_link 		= document.getElementById('text-input-id-2').value;
+	jf_CTA_target_link_type	= paintRadioValues();
+
+	var returnContent = '<h2>' + jf_title + '</h2>';
+		returnContent += '<p>' + jf_body_content + '</p>';
+		returnContent += '<a href="' + jf_CTA_target_link + '" class="' + jf_CTA_target_link_type + '">'+ jf_CTA_copy + '</a>';
+
+
+	sdk.setContent(returnContent);
 	sdk.setData({
-		address: address,
-		width: width,
-		height: height,
-		zoom: zoom,
-		link: link,
-		mapsKey: mapsKey
+		jf_title: 					jf_title,
+		jf_body_content: 			jf_body_content,
+		jf_CTA_copy: 				jf_CTA_copy,
+		jf_CTA_target_link: 		jf_CTA_target_link,
+		jf_CTA_target_link_type: 	jf_CTA_target_link_type
 	});
-	localStorage.setItem('googlemapsapikeyforblock', mapsKey);
 }
 
 sdk.getData(function (data) {
-	address = data.address || '';
-	width = data.width || 400;
-	height = data.height || 300;
-	zoom = data.zoom || 15;
-	link = data.link || '';
-	mapsKey = data.mapsKey || localStorage.getItem('googlemapsapikeyforblock');
+	jf_title 					= data.jf_title || '';
+	jf_body_content 			= data.jf_body_content || '';
+	jf_CTA_copy 				= data.jf_CTA_copy || '';
+	jf_CTA_target_link 			= data.jf_CTA_target_link || '';
+	jf_CTA_target_link_type 	= data.jf_CTA_target_link_type || '';
 	paintSettings();
-	paintSliderValues();
-	paintMap();
+	paintRadioValues();
+	paintContent();
 });
 
+document.getElementById('radio-input-id-1').addEventListener("click", getRadioValues());
+document.getElementById('radio-input-id-2').addEventListener("click", getRadioValues());
+
 document.getElementById('workspace').addEventListener("input", function () {
-	debounce(paintMap, 500)();
-	paintSliderValues();
+	debounce(paintContent, 500)();
+	paintRadioValues();
 });
 
 
