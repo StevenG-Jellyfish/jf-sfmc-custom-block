@@ -98,7 +98,7 @@ function paintSettings () {
 	document.getElementById('textarea-input-id-0').value 	= jf_body_content;
 	document.getElementById('text-input-id-1').value 		= jf_CTA_copy;
 	document.getElementById('text-input-id-2').value 		= jf_CTA_target_link;
-	paintRadioValues();
+	getRadioValues();
 }
 
 function getRadioValues () {
@@ -117,7 +117,9 @@ function paintRadioValues () {
 		console.log('paintRadioValues:: radio value::', ele[i].value, ele[i].checked, jf_CTA_target_link_type);
 		if(ele[i].checked) { 
 			console.log('paintRadioValues:: checking button::', ele[i].value);
-			jf_CTA_target_link_type = ele[i].value;
+			return ele[i].value;
+
+			console.log('paintRadioValues:: jf_CTA_target_link_type::', jf_CTA_target_link_type);
 		}
 	} 
 }
@@ -128,6 +130,8 @@ function paintContent() {
 	jf_CTA_copy 			= document.getElementById('text-input-id-1').value;
 	jf_CTA_target_link 		= document.getElementById('text-input-id-2').value;
 	jf_CTA_target_link_type	= paintRadioValues();
+
+	console.log('paintContent:: jf_CTA_target_link_type button::', jf_CTA_target_link_type);
 
 	var returnContent = '<h2>' + jf_title + '</h2>';
 		returnContent += '<p>' + jf_body_content + '</p>';

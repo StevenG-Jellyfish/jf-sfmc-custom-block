@@ -29,14 +29,13 @@ function paintSettings () {
 	document.getElementById('textarea-input-id-0').value 	= jf_body_content;
 	document.getElementById('text-input-id-1').value 		= jf_CTA_copy;
 	document.getElementById('text-input-id-2').value 		= jf_CTA_target_link;
-	paintRadioValues();
+	getRadioValues();
 }
 
 function getRadioValues () {
 	var ele = document.getElementsByName('cta-link-display');               
 	for(i = 0; i < ele.length; i++) { 
 		if(ele[i].value == jf_CTA_target_link_type) { 
-			console.log('getRadioValues:: checking button::', ele[i].value, jf_CTA_target_link_type);
 			ele[i].checked = true;
 		}
 	} 
@@ -45,10 +44,8 @@ function getRadioValues () {
 function paintRadioValues () {
 	var ele = document.getElementsByName('cta-link-display');               
 	for(i = 0; i < ele.length; i++) { 
-		console.log('paintRadioValues:: radio value::', ele[i].value, ele[i].checked, jf_CTA_target_link_type);
 		if(ele[i].checked) { 
-			console.log('paintRadioValues:: checking button::', ele[i].value);
-			jf_CTA_target_link_type = ele[i].value;
+			return ele[i].value;
 		}
 	} 
 }
