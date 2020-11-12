@@ -105,23 +105,20 @@ function getRadioValues () {
 	var ele = document.getElementsByName('cta-link-display');               
 	for(i = 0; i < ele.length; i++) { 
 		if(ele[i].value == jf_CTA_target_link_type) { 
-			console.log('getRadioValues:: checking button::', ele[i].value, jf_CTA_target_link_type);
 			ele[i].checked = true;
 		}
 	} 
 	//paintRadioValues();
 }
 function paintRadioValues () {
-	var ele = document.getElementsByName('cta-link-display');               
+	var ele = document.getElementsByName('cta-link-display');   
+	var lnkType = "link"; // defaults to link           
 	for(i = 0; i < ele.length; i++) { 
-		console.log('paintRadioValues:: radio value::', ele[i].value, ele[i].checked, jf_CTA_target_link_type);
 		if(ele[i].checked) { 
-			console.log('paintRadioValues:: checking button::', ele[i].value);
-			return ele[i].value;
-
-			console.log('paintRadioValues:: jf_CTA_target_link_type::', jf_CTA_target_link_type);
+			lnkType = ele[i].value;
 		}
 	} 
+	return lnkType;
 }
 
 function paintContent() {
@@ -131,12 +128,13 @@ function paintContent() {
 	jf_CTA_target_link 		= document.getElementById('text-input-id-2').value;
 	jf_CTA_target_link_type	= paintRadioValues();
 
-	console.log('paintContent:: jf_CTA_target_link_type button::', jf_CTA_target_link_type);
-
-	var returnContent = '<h2>' + jf_title + '</h2>';
-		returnContent += '<p>' + jf_body_content + '</p>';
-		returnContent += '<a href="' + jf_CTA_target_link + '" class="' + jf_CTA_target_link_type + '">'+ jf_CTA_copy + '</a>';
-
+//HTML OUTPUT HERE
+	var returnContent = '';
+		
+		returnContent += (jf_title !='')?'<h2>' + jf_title + '</h2>':'';
+		returnContent += (jf_body_content !='')?'<p>' + jf_body_content + '</p>':'';
+		returnContent += ((jf_CTA_target_link !='') && (jf_CTA_copy !=''))?'<a href="' + jf_CTA_target_link + '" class="' + jf_CTA_target_link_type + '">'+ jf_CTA_copy + '</a>':'';
+//HTML OUTPUT HERE
 
 	sdk.setContent(returnContent);
 	sdk.setData({
