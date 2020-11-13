@@ -157,8 +157,10 @@ sdk.getData(function (data) {
 	paintContent();
 });
 
+/* turned off radio buttons in HTML
 document.getElementById('radio-input-id-1').addEventListener("click", getRadioValues());
 document.getElementById('radio-input-id-2').addEventListener("click", getRadioValues());
+*/
 
 document.getElementById('workspace').addEventListener("input", function () {
 	debounce(paintContent, 500)();
